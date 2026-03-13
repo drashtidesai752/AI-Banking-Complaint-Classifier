@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12 text-center">
+        <h2 class="display-6 fw-bold text-dark">Analytics Dashboard</h2>
+        <p class="text-muted">Visual representation of complaint distribution</p>
+        <hr>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="bi bi-pie-chart-fill me-2"></i>Complaints by Category
+                </h6>
+            </div>
+            <div class="card-body">
+                <div style="min-height: 300px; position: relative;">
+                    <canvas id="categoryPieChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white py-3">
+                <h6 class="m-0 font-weight-bold text-success">
+                    <i class="bi bi-bar-chart-fill me-2"></i>Complaints by Priority
+                </h6>
+            </div>
+            <div class="card-body">
+                <div style="min-height: 300px; position: relative;">
+                    <canvas id="priorityBarChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<script>
+    // 1. Category Pie Chart
+    const ctxCat = document.getElementById('categoryPieChart').getContext('2d');
+    new Chart(ctxCat, {
+        type: 'pie',
+        data: {
+            labels: {{ categories|tojson|safe }},
+            datasets: [{
+                data: {{ category_counts|tojson|safe }},
+                backgroundColor: ['#0d6efd', '#198754', '#0dcaf0', '#ffc107', '#dc3545'],
+                hoverOffset: 15
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom' }
+            }
+        }
+    });
+
+    // 2. Priority Bar Chart
+    const ctxPri = document.getElementById('priorityBarChart').getContext('2d');
+    new Chart(ctxPri, {
+        type: 'bar',
+        data: {
+            labels: {{ priorities|tojson|safe }},
+            datasets: [{
+                label: 'Number of Complaints',
+                data: {{ priority_counts|tojson|safe }},
+                backgroundColor: '#0d6efd',
+                borderRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

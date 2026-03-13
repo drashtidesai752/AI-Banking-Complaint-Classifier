@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <!-- Header -->
+            <div class="d-flex align-items-center mb-4">
+                <a href="{{ url_for('user.dashboard') }}" class="btn btn-outline-secondary me-3">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+                <h3 class="fw-bold mb-0">Submit New Complaint</h3>
+            </div>
+
+            <!-- Card -->
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+
+                    <form method="POST" action="{{ url_for('user.create_complaint') }}">
+
+                        <!-- Title -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-muted small">
+                                ISSUE TITLE
+                            </label>
+                            <input
+                                type="text"
+                                name="title"
+                                class="form-control"
+                                placeholder="E.g. Internet not working"
+                                required
+                            >
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-muted small">
+                                DETAILED DESCRIPTION
+                            </label>
+                            <textarea
+                                name="description"
+                                class="form-control"
+                                rows="6"
+                                placeholder="Describe the issue in detail. AI will auto-detect category & priority."
+                                required
+                            ></textarea>
+
+                            <div class="form-text text-primary mt-1">
+                                <i class="bi bi-magic"></i>
+                                AI Analysis enabled for Category & Priority
+                            </div>
+                        </div>
+
+                        <!-- Submit -->
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary px-4 py-2">
+                                Submit Report
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
